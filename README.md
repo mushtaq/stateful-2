@@ -5,7 +5,7 @@ Setup
 
 - Install JDK 11
 - Install latest sbt (1.2.8)
-- Install latest IntelliJ (2019.2)
+- Install latest IntelliJ (2019.2.1)
 - Install latest Scala plugin from within IntelliJ
 - Install git
 - clone this repo
