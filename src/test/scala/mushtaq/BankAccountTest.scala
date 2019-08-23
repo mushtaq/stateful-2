@@ -26,6 +26,9 @@ object BankAccountTest {
 
     Thread.sleep(2000)
 
-    println(account.balance)
+    var y = 0
+    account.onBalance { x =>
+      y += x
+    }
   }
 }

@@ -1,6 +1,7 @@
 package mushtaq
 
-import java.util.concurrent.Executors
+import java.util.concurrent.{Callable, Executors}
+import java.util.function.Consumer
 
 class BankAccount {
   private val rbiService = new RbiService
@@ -24,7 +25,8 @@ class BankAccount {
 
   }
 
-  def balance: Int =  {
-    _balance
+  def onBalance(callback: Consumer[Int]): Unit = {
+    val op: Runnable = () => callback.accept(_balance)
+    executorService.submit(op)
   }
 }
