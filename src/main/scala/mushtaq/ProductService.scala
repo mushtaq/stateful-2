@@ -1,16 +1,16 @@
 package mushtaq
 
-import java.util.concurrent.Executors
+import java.util.concurrent.{Executors, TimeUnit}
 import java.util.function.Consumer
 
 class ProductService {
-  val executorService = Executors.newSingleThreadExecutor()
+  val executorService = Executors.newScheduledThreadPool(1)
 
   val data: Map[String, Int] = Map("car" -> 100, "rocket" -> 800)
 
   def onPrice(productId: String, callback: Consumer[Int]): Unit = {
     val op: Runnable = () => callback.accept(data(productId))
-    executorService.submit(op)
+    executorService.schedule(op, 1, TimeUnit.SECONDS)
   }
 
   def totalPriceSequential(id1: String, id2: String, callback: Consumer[Int]) = {

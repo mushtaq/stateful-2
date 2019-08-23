@@ -1,20 +1,20 @@
 package mushtaq
 
-import java.util.concurrent.Executors
+import java.util.concurrent.{ExecutorService, Executors}
 import java.util.function.Consumer
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService, Future, Promise}
 
-class ProductService2 {
+class ProductService2(productService: ProductService) {
 
-  val executorService              = Executors.newSingleThreadExecutor()
+  val executorService: ExecutorService      = Executors.newSingleThreadExecutor()
   private implicit val ec: ExecutionContext = ExecutionContext.fromExecutorService(executorService)
 
   val data: Map[String, Int] = Map("car" -> 100, "rocket" -> 800)
 
   def getPrice(productId: String): Future[Int] = {
     val promise: Promise[Int] = Promise()
-    promise.success(data(productId))
+    productService.onPrice(productId, x => promise.success(x))
     promise.future
   }
 
