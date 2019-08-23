@@ -16,11 +16,11 @@ object BankAccountTest {
       account.withdraw(100)
     }
 
-    (1 to 10000).foreach { _ =>
+    (1 to 50000).foreach { _ =>
       executorService.submit(runnable)
     }
 
-    (1 to 10000).foreach { _ =>
+    (1 to 50000).foreach { _ =>
       executorService.submit(runnable2)
     }
 
