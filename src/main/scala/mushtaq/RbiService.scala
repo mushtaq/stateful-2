@@ -3,7 +3,7 @@ package mushtaq
 import java.util.concurrent.{Executors, TimeUnit}
 
 class RbiService {
-  val executorService = Executors.newScheduledThreadPool(10)
+  val executorService = Executors.newScheduledThreadPool(1)
 
   def notify(action: Action): Unit = {
     Thread.sleep(1000)
