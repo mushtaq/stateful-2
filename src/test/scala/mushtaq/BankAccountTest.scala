@@ -24,7 +24,7 @@ object BankAccountTest {
       executorService.submit(runnable2)
     }
 
-    Thread.sleep(5000)
+    Thread.sleep(2000)
 
     println(account.balance)
   }
