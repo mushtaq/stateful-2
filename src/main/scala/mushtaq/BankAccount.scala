@@ -1,32 +1,27 @@
 package mushtaq
 
-import java.util.concurrent.{Callable, Executors}
-import java.util.function.Consumer
+import java.util.concurrent.{ExecutorService, Executors}
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class BankAccount {
-  private val rbiService = new RbiService
-  val executorService    = Executors.newSingleThreadExecutor()
+  private val rbiService               = new RbiService
+  val executorService: ExecutorService = Executors.newSingleThreadExecutor()
+  implicit val ec: ExecutionContext    = ExecutionContext.fromExecutorService(executorService)
 
   private var _balance = 0
 
-  def deposit(amount: Int): Unit = {
-    rbiService.onNotify(Deposit(amount)) { () =>
-      val op: Runnable = () => _balance += amount
-      executorService.submit(op)
+  def deposit(amount: Int): Future[Unit] = {
+    rbiService.onNotify2(Deposit(amount)).map { _ =>
+      _balance += amount
     }
-
   }
 
-  def withdraw(amount: Int): Unit = {
-    rbiService.onNotify(Withdraw(amount)) { () =>
-      val op: Runnable = () => _balance -= amount
-      executorService.submit(op)
+  def withdraw(amount: Int): Future[Unit] = {
+    rbiService.onNotify2(Withdraw(amount)).map { _ =>
+      _balance -= amount
     }
-
   }
 
-  def onBalance(callback: Consumer[Int]): Unit = {
-    val op: Runnable = () => callback.accept(_balance)
-    executorService.submit(op)
-  }
+  def balance: Future[Int] = Future(_balance)
 }

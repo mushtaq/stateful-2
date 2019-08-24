@@ -2,11 +2,14 @@ package mushtaq
 
 import java.util.concurrent.{ExecutorService, Executors}
 
+import scala.concurrent.ExecutionContext
+
 object BankAccountTest {
   val account = new BankAccount
 
   def main(args: Array[String]): Unit = {
-    val executorService = Executors.newScheduledThreadPool(1000)
+    val executorService               = Executors.newScheduledThreadPool(1000)
+    implicit val ec: ExecutionContext = ExecutionContext.fromExecutorService(executorService)
 
     val runnable: Runnable = { () =>
       account.deposit(100)
@@ -24,11 +27,10 @@ object BankAccountTest {
       executorService.submit(runnable2)
     }
 
-    Thread.sleep(2000)
+    Thread.sleep(4000)
 
-    var y = 0
-    account.onBalance { x =>
-      y += x
+    account.balance.foreach { x =>
+      println(x)
     }
   }
 }
