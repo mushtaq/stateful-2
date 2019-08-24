@@ -2,6 +2,7 @@ package mushtaq
 
 import java.util.concurrent.{ExecutorService, Executors}
 import java.util.function.Consumer
+import scala.async.Async._
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService, Future, Promise}
 
@@ -24,6 +25,12 @@ class ProductService2(productService: ProductService) {
         price1 + price2
       }
     }
+  }
+
+  def totalPriceSequential2(id1: String, id2: String): Future[Int] = async {
+    val price1: Int = await(getPrice(id1))
+    val price2: Int = await(getPrice(id2))
+    price1 + price2
   }
 
   def totalPricePar(id1: String, id2: String): Future[Int] = {
