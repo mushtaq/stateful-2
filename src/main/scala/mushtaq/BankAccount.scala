@@ -6,6 +6,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class BankAccount {
   private val rbiService               = new RbiService
+
   val executorService: ExecutorService = Executors.newSingleThreadExecutor()
   implicit val ec: ExecutionContext    = ExecutionContext.fromExecutorService(executorService)
 
